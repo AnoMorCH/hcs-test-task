@@ -18,12 +18,12 @@ class Building(models.Model):
 class Apartment(models.Model):
     id = models.BigAutoField(primary_key=True)
     number = models.SmallIntegerField()
-    building_id = models.ForeignKey(Building, to_field="id", on_delete=models.CASCADE)
+    building = models.ForeignKey(Building, to_field="id", on_delete=models.CASCADE)
     size_m2 = models.SmallIntegerField()
     
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["number", "building_id"], name="%(app_label)s_%(class)s_unique")
+            models.UniqueConstraint(fields=["number", "building"], name="%(app_label)s_%(class)s_unique")
         ]
 
     def __str__(self):
@@ -32,10 +32,10 @@ class Apartment(models.Model):
         
 class WaterMeter(models.Model):
     id = models.BigAutoField(primary_key=True)
-    apartment_id = models.ForeignKey(Apartment, to_field="id", on_delete=models.CASCADE)
+    apartment = models.ForeignKey(Apartment, to_field="id", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Meter #{self.id} at address "{self.apartment_id}"'
+        return f'Meter #{self.id} at address "{self.apartment}"'
 
     
 class Tariff(models.Model):
