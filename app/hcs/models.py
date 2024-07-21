@@ -1,6 +1,9 @@
 from django.db import models
 
 
+UNIQUE_CONSTRAINT_NAME_PATTERN = "%(app_label)s_%(class)s_unique"
+
+
 class Building(models.Model):
     id = models.BigAutoField(primary_key=True)
     number = models.SmallIntegerField()
@@ -8,7 +11,7 @@ class Building(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["number", "address"], name="%(app_label)s_%(class)s_unique")
+            models.UniqueConstraint(fields=["number", "address"], name=UNIQUE_CONSTRAINT_NAME_PATTERN)
         ]
 
     def __str__(self):
@@ -23,7 +26,7 @@ class Apartment(models.Model):
     
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["number", "building"], name="%(app_label)s_%(class)s_unique")
+            models.UniqueConstraint(fields=["number", "building"], name=UNIQUE_CONSTRAINT_NAME_PATTERN)
         ]
 
     def __str__(self):
@@ -45,5 +48,5 @@ class Tariff(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["type"], name="%(app_label)s_%(class)s_unique")
+            models.UniqueConstraint(fields=["type"], name=UNIQUE_CONSTRAINT_NAME_PATTERN)
         ]

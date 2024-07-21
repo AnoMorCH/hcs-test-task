@@ -4,6 +4,13 @@ from .apartment import ApartmentEntity
 
 class BuildingEntity:
     @staticmethod
+    def create(number, address):
+        if not all([number, address]):
+            raise AttributeError("There is no number or address.")
+        building = Building(number=number, address=address)
+        building.save()
+        
+    @staticmethod
     def get_info_about_all():
         info = []
         all_buildings = Building.objects.all().values()

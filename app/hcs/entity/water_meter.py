@@ -1,7 +1,14 @@
-from ..models import WaterMeter
+from ..models import Apartment, WaterMeter
 
 
 class WaterMeterEntity:
+    @staticmethod
+    def create(apartment_id):
+        if not apartment_id:
+            raise AttributeError("There is no apartment id.")
+        water_meter = WaterMeter(apartment=Apartment(id=apartment_id))
+        water_meter.save()
+
     @staticmethod
     def get_info_by(apartment_id):
         info = []
