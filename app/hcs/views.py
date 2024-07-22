@@ -5,7 +5,8 @@ from .entity.apartment import ApartmentEntity
 from .entity.water_meter import WaterMeterEntity
 from .entity.message import MessageEntity
 from .entity.water_meter_log import WaterMeterLogEntity
-from .entity.communal_service_price import CommunalServicePrice
+# from .entity.communal_service_price import CommunalServicePrice
+from .tasks import task_count_communal_service_price
 import json
 
 
@@ -57,12 +58,15 @@ class CountCommunalServicePriceView(View):
     def post(self, request):
         try:
             data = json.loads(request.body)
-            csp = CommunalServicePrice(data.get("building_id"), data.get("year"), data.get("month"))
-            csp_value = csp.count()
+            building_id, year, month = data.get("building_id"), data.get("year"), data.get("month")
+            res = task_count_communal_service_price.delay(building_id, year, month)
+            csp_value = res.get()
+            # csp = CommunalServicePrice(data.get("building_id"), data.get("year"), data.get("month"))
+            # csp_value = csp.count()
             message = {
-                "building_id": csp.building.id,
-                "year": csp.year,
-                "month": csp.month,
+                "building_id": building_id,
+                "year": year,
+                "month": month,
                 "price": csp_value,
             }
             return HttpResponse(json.dumps(message), content_type="application/json", status=200)
