@@ -1,1 +1,6 @@
 /app/venv
+/app/hcs/__pycache__
+/app/house_accounting/__pycache__
+/app/hcs/entity/__pycache__
+/app/hcs/management/commands/__pycache__
+/app/hcs/migrations/__pycache__

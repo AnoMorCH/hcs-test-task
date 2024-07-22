@@ -23,6 +23,7 @@ class WaterMeterLogEntity:
             month=month,
             year=year
         ).first()
+        if not water_meter_log: return 0
         is_price_already_found = water_meter_log.price is not None
         if is_price_already_found: return water_meter_log.price
         wc = WaterConsumption(water_meter_id, year, month)

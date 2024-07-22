@@ -15,8 +15,7 @@ class CommunalServicePrice:
         apartments = ApartmentEntity.get_by(self.building.id)
         total_price = 0
         for apartment in apartments:
-            water_meters = WaterMeterEntity.get_by(apartment.id)
-            for water_meter in water_meters:
+            for water_meter in WaterMeterEntity.get_by(apartment.id):
                 total_price += WaterMeterLogEntity.get_n_set_price(water_meter.id, self.month, self.year)
             total_price += BuildingServiceLogEntity.get_n_set_price(apartment.id, self.year, self.month)
         return total_price

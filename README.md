@@ -1,5 +1,12 @@
 # Тестовое задание для компании Единая Информационная Система ЖКХ
 
+## Запуск приложения
+
+```bash
+docker compose build
+docker compose up
+```
+
 ## [Схема базы данных (ссылка)](https://dbdiagram.io/d/hcs-test-task-669caa478b4bb5230ee6f85e)
 
 ![HCS schema](https://i.imgur.com/w62dCWm.png)
@@ -10,7 +17,8 @@
 
 ```
 METHOD: get
-URL: http://127.0.0.1:8000/building/
+URL: http://0.0.0.0:8000/building/
+RESPONSE: json
 ```
 
 ### Добавить здание
@@ -20,7 +28,8 @@ METHOD: post
 BODY:
 - number: int
 - address: varchar
-URL: http://127.0.0.1:8000/building/
+URL: http://0.0.0.0:8000/building/
+RESPONSE: json
 ```
 
 ### Добавить квартиру в здание
@@ -31,7 +40,8 @@ BODY:
 - number: int
 - building_id: int
 - size_m2: int
-URL: http://127.0.0.1:8000/apartment/
+URL: http://0.0.0.0:8000/apartment/
+RESPONSE: json
 ```
 
 ### Добавить счётчик в квартиру
@@ -40,10 +50,13 @@ URL: http://127.0.0.1:8000/apartment/
 METHOD: post
 BODY:
 - apartment_id: int
-URL: http://127.0.0.1:8000/water_meter/
+URL: http://0.0.0.0:8000/water_meter/
+RESPONSE: json
 ```
 
 ### Посчитать квитанции под весь дом
+
+Прежде чем запустить выполнение функции, необходимо добавить значение тарифов на жильё и на водоснабжение через админ-панель в таблицу `Tariff`.
 
 ```
 METHOD: post
@@ -51,7 +64,7 @@ BODY:
 - building_id: int
 - year: int
 - month: int
-URL: http://127.0.0.1:8000/communal_service_price_count/
+URL: http://0.0.0.0:8000/communal_service_price_count/
 ```
 
 ## Особенности реализации приложения
