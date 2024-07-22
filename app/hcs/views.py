@@ -4,6 +4,8 @@ from .entity.building import BuildingEntity
 from .entity.apartment import ApartmentEntity
 from .entity.water_meter import WaterMeterEntity
 from .entity.message import MessageEntity
+from .entity.water_meter_log import WaterMeterLogEntity
+from .entity.communal_service_price import CommunalServicePrice
 import json
 
 
@@ -37,5 +39,32 @@ class WaterMeterView(View):
             data = json.loads(request.body)
             WaterMeterEntity.create(data.get("apartment_id"))
             return HttpResponse(MessageEntity.get("A water meter has been created."), content_type="application/json", status=200)
+        except Exception as e:
+            return HttpResponse(MessageEntity.get(str(e)), content_type="application/json", status=400)
+
+            
+class WaterMeterLogView(View):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            WaterMeterLogEntity.create(data.get("water_meter_id"), data.get("month"), data.get("year"), data.get("consumed"))
+            return HttpResponse(MessageEntity.get("A water meter log has been created."), content_type="application/json", status=200)
+        except Exception as e:
+            return HttpResponse(MessageEntity.get(str(e)), content_type="application/json", status=400)
+
+
+class CountCommunalServicePriceView(View):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            csp = CommunalServicePrice(data.get("building_id"), data.get("year"), data.get("month"))
+            csp_value = csp.count()
+            message = {
+                "building_id": csp.building.id,
+                "year": csp.year,
+                "month": csp.month,
+                "price": csp_value,
+            }
+            return HttpResponse(json.dumps(message), content_type="application/json", status=200)
         except Exception as e:
             return HttpResponse(MessageEntity.get(str(e)), content_type="application/json", status=400)
